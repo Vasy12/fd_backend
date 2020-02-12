@@ -16,6 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         is: /^[^ ]*$/,
       }
     },
+    isDone: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      validate: {
+        isNull: false,
+      }
+    },
     userId: {
       type: DataTypes.INTEGER,
       validate: {
