@@ -3,12 +3,12 @@ const Controller = require( '../utils/controller' );
 
 class UserController {
   constructor () {
-    this.controller = new Controller( User );
+    this._controller = new Controller( User );
   }
 
   createUser = async (req, res, next) => {
     try {
-      const newUser = await this.controller.create( req.body );
+      const newUser = await this._controller.create( req.body );
       const userData = newUser.get();
       delete userData.password;
       res.send( userData );
@@ -17,20 +17,19 @@ class UserController {
       next( e );
     }
   };
-  updateUser = async (req, res, next) => {
+  updateUserById = async (req, res, next) => {
     try {
-      const updatedUser = await this.controller.update( req.params.id, req.body );
+      const updatedUser = await this._controller.update( req.params.id, req.body );
       const data = updatedUser.get();
       delete data.password;
       return res.send( data );
     } catch (e) {
       next( e );
     }
-
   };
-  readUser = async (req, res, next) => {
+  getUserById = async (req, res, next) => {
     try {
-      res.send( await this.controller.read( req.params.id, {
+      res.send( await this._controller.read( req.params.id, {
         attributes: {
           exclude: ['password'],
         }
@@ -39,9 +38,9 @@ class UserController {
       next( e );
     }
   };
-  deleteUser = async (req, res, next) => {
+  deleteUserById = async (req, res, next) => {
     try {
-      res.send( `${await this.controller.delete( req.params.id )}` );
+      res.send( `${await this._controller.delete( req.params.id )}` );
     } catch (e) {
       next( e );
     }
