@@ -1,44 +1,52 @@
 const { User } = require( '../models' );
+const Controller = require( '../utils/controller' );
 
 class UserController {
+  constructor () {
+    this.controller = new Controller( User );
+  }
 
   createUser = async (req, res, next) => {
-    const createdUser = await User.create( req.body );
-    res.send( createdUser );
-  };
+    try {
+      const newUser = await this.controller.create( req.body );
+      const userData = newUser.get();
+      delete userData.password;
+      res.send( userData );
 
-  getUserById = async (req, res, next) => {
-
-    const user = await User.findByPk( req.params.id );
-    return res.send( user );
-  };
-
-  updateUserById = async (req, res, next) => {
-
-    const [updatedRowsCount, rows] = await User.update( req.body, {
-      where: {
-        id: req.params.id,
-      },
-      returning: true,
-    } );
-    if (updatedRowsCount) {
-      return res.send( rows[0] );
+    } catch (e) {
+      next( e );
     }
-    res.status( 404 ).send( 'Error 404. User not found.' );
-
   };
-
-  deleteUserById = async (req, res, next) => {
-    const deletedRowCount = await User.destroy( {
-                                                  where: {
-                                                    id: req.params.id
-                                                  }
-                                                } );
-    if (deletedRowCount) {
-      return res.send( 'User has been deleted.' );
+  updateUser = async (req, res, next) => {
+    try {
+      const updatedUser = await this.controller.update( req.params.id, req.body );
+      const data = updatedUser.get();
+      delete data.password;
+      return res.send( data );
+    } catch (e) {
+      next( e );
     }
-    res.status( 404 ).send( 'Error 404. User not found.' );
+
   };
+  readUser = async (req, res, next) => {
+    try {
+      res.send( await this.controller.read( req.params.id, {
+        attributes: {
+          exclude: ['password'],
+        }
+      } ) );
+    } catch (e) {
+      next( e );
+    }
+  };
+  deleteUser = async (req, res, next) => {
+    try {
+      res.send( `${await this.controller.delete( req.params.id )}` );
+    } catch (e) {
+      next( e );
+    }
+  };
+
 }
 
 module.exports = new UserController();

@@ -13,15 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isNull: false,
         notEmpty: true,
-        is: /^[^ ]*$/,
       }
     },
     isDone: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      validate: {
-        isNull: false,
-      }
+      defaultValue: false,
     },
     userId: {
       type: DataTypes.INTEGER,
