@@ -1,45 +1,44 @@
 const { Task } = require( '../models' );
+const Controller = require( '../utils/controller' );
 
 class TaskController {
 
+  constructor () {
+    this._controller = new Controller( Task );
+  }
+
   createTask = async (req, res, next) => {
-    req.body.userId = req.headers.authorization;
-    const createdTask = await Task.create( req.body );
-    res.send( createdTask );
+    try {
+      res.send( await this._controller.create( req.body ) );
+    } catch (e) {
+      next( e );
+    }
   };
 
   getTaskById = async (req, res, next) => {
-
-    const Task = await Task.findByPk( req.params.id );
-    return res.send( Task );
+    try {
+      res.send( await this._controller.read( req.params.id ) );
+    } catch (e) {
+      next( e );
+    }
   };
 
   updateTaskById = async (req, res, next) => {
-
-    const [updatedRowsCount, rows] = await Task.update( req.body, {
-      where: {
-        id: req.params.id,
-      },
-      returning: true,
-    } );
-    if (updatedRowsCount) {
-      return res.send( rows[0] );
+    try {
+      res.send( await this._controller.update( req.params.id, req.body ) );
+    } catch (e) {
+      next( e );
     }
-    res.status( 404 ).send( 'Error 404. Task not found.' );
-
   };
 
   deleteTaskById = async (req, res, next) => {
-    const deletedRowCount = await Task.destroy( {
-                                                  where: {
-                                                    id: req.params.id
-                                                  }
-                                                } );
-    if (deletedRowCount) {
-      return res.send( 'Task has been deleted.' );
+    try {
+      res.send( `${await this._controller.delete( req.params.id )}` );
+    } catch (e) {
+      next( e );
     }
-    res.status( 404 ).send( 'Error 404. Task not found.' );
   };
+
 }
 
 module.exports = new TaskController();
