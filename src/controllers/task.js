@@ -9,7 +9,11 @@ class TaskController {
 
   createTask = async (req, res, next) => {
     try {
-      res.send( await this._controller.create( req.body ) );
+
+      res.send( await this._controller.create( {
+                                                 ...req.body,
+                                                 userId: req.authorizationData.id,
+                                               } ) );
     } catch (e) {
       next( e );
     }

@@ -47,5 +47,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
     } );
   };
+
+  User.sendData = (req, res, next) => {
+    res.send( req.user );
+  };
+
   return User;
 };

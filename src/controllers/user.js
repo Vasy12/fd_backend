@@ -19,7 +19,7 @@ class UserController {
   };
   updateUserById = async (req, res, next) => {
     try {
-      const updatedUser = await this._controller.update( req.params.id, req.body );
+      const updatedUser = await this._controller.update( req.userId, req.body );
       const data = updatedUser.get();
       delete data.password;
       return res.send( data );
@@ -29,7 +29,7 @@ class UserController {
   };
   getUserById = async (req, res, next) => {
     try {
-      res.send( await this._controller.read( req.params.id, {
+      res.send( await this._controller.read( req.userId, {
         attributes: {
           exclude: ['password'],
         }
@@ -38,9 +38,10 @@ class UserController {
       next( e );
     }
   };
+
   deleteUserById = async (req, res, next) => {
     try {
-      res.send( `${await this._controller.delete( req.params.id )}` );
+      res.send( `${await this._controller.delete( req.userId )}` );
     } catch (e) {
       next( e );
     }
