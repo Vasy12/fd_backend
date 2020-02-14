@@ -37,7 +37,8 @@ class TaskController {
 
   deleteTaskById = async (req, res, next) => {
     try {
-      res.send( `${await this._controller.delete( req.params.id )}` );
+      await this._controller.delete( req.params.id );
+      res.sendStatus( 200 );
     } catch (e) {
       next( e );
     }
