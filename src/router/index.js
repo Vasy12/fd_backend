@@ -10,7 +10,7 @@ const router = express.Router();
  .post( '/signup', );*/
 
 router.use( checkAuthorization );
-router.use( '/user', userRouter );
-router.use( '/task', taskRouter );
+router.use( userRouter );
+router.use( taskRouter );
 
 module.exports = router;
