@@ -1,9 +1,11 @@
 const checkAuthorization = require( './checkAuthorization.js' );
-const extractUserPk = require( './extractUserPK.js' );
+const extractUserId = require( './extractUserId.js' );
 const comparePassword = require( './comparePassword.js' );
+const findUserByEmail = require( './findUserByEmail.js' );
 
 module.exports = {
   checkAuthorization,
-  extractUserPk,
+  extractUserId,
   comparePassword,
+  findUserByEmail,
 };
