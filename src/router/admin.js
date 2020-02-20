@@ -6,11 +6,11 @@ adminRouter.route( '/users' )
            .get( async (req, res, next) => {
              try {
                const users = await User.findAll( {
-                                                   limit: 40,
-                                                   offset: 0
+                                                   limit: req.query.limit || 40,
+                                                   offset: req.query.offset || 0,
                                                  } );
                res.send( users );
-               ;
+
              } catch (e) {
                next( e );
              }
