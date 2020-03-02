@@ -6,7 +6,7 @@ const PORT = process.env.NODE_ENV || 3000;
 const app = express();
 app.use( cors() );
 app.use( express.json() );
-app.use( router );
+app.use( '/api', router );
 app.listen( PORT, () => {
   console.log( `Example app listening on port ${PORT}!` );
 } );
