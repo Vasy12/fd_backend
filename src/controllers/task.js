@@ -10,6 +10,8 @@ class TaskController {
   createTask = async (req, res, next) => {
     try {
 
+      debugger;
+
       res.send( await this._controller.create( {
                                                  ...req.body,
                                                  userId: req.authorizationData.id,
@@ -39,6 +41,21 @@ class TaskController {
     try {
       await this._controller.delete( req.params.id );
       res.sendStatus( 200 );
+    } catch (e) {
+      next( e );
+    }
+  };
+
+  getUserTasks = async (req, res, next) => {
+    try {
+
+      const tasks = await Task.findAll( {
+                                          where: {
+                                            userId: req.authorizationData.id,
+                                          },
+                                          order: [['createdAt', 'DESC']]
+                                        } );
+      res.send( tasks );
     } catch (e) {
       next( e );
     }
