@@ -3,15 +3,15 @@ module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define( 'Task', {
     deadline: {
       type: DataTypes.DATE,
+      allowNull: false,
       validate: {
-        isNull: false,
         isDate: true,
       }
     },
     value: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        isNull: false,
         notEmpty: true,
       }
     },
@@ -20,10 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
     userId: {
+      allowNull: false,
       type: DataTypes.INTEGER,
-      validate: {
-        isNull: false,
-      }
     },
     files: DataTypes.ARRAY( DataTypes.STRING )
   }, {} );
